@@ -421,10 +421,10 @@ if (!console) {
  Runtime=IntelliFactory&&IntelliFactory.Runtime;
  Client.Main=function()
  {
-  var graph,a,cy,a$1,r,r$1,r$2,r$3,r$4,r$5,r$6,r$7;
-  graph=(a=[AttrProxy.Create("style","height:100vh;")],Doc.Element("div",a,[]));
+  var graph,a,cy,a$1,r,r$1,r$2,r$3,r$4,r$5,r$6,r$7,r$8,r$9,r$10,r$11,r$12,r$13,r$14,r$15,r$16,r$17,r$18,r$19,r$20,r$21,r$22,r$23,r$24,r$25;
+  graph=(a=[AttrProxy.Create("style","height:50vh;")],Doc.Element("div",a,[]));
   Doc.RunById("main",graph);
-  cy=(a$1=(r={},r.container=graph.elt,r.elements=[(r$1={},r$1.data=(r$2={},r$2.id="a",r$2),r$1),(r$3={},r$3.data=(r$4={},r$4.id="b",r$4),r$3),(r$5={},r$5.data=(r$6={},r$6.id="ab",r$6.source="a",r$6.target="b",r$6),r$5)],r.style=[{
+  cy=(a$1=(r={},r.container=graph.elt,r.elements=[(r$1={},r$1.data=(r$2={},r$2.id="a",r$2),r$1),(r$3={},r$3.data=(r$4={},r$4.id="b",r$4),r$3),(r$5={},r$5.data=(r$6={},r$6.id="c",r$6),r$5),(r$7={},r$7.data=(r$8={},r$8.id="d",r$8),r$7),(r$9={},r$9.data=(r$10={},r$10.id="e",r$10),r$9),(r$11={},r$11.data=(r$12={},r$12.id="f",r$12),r$11),(r$13={},r$13.data=(r$14={},r$14.id="ab",r$14.source="a",r$14.target="b",r$14),r$13),(r$15={},r$15.data=(r$16={},r$16.id="bc",r$16.source="b",r$16.target="c",r$16),r$15),(r$17={},r$17.data=(r$18={},r$18.id="ad",r$18.source="a",r$18.target="d",r$18),r$17),(r$19={},r$19.data=(r$20={},r$20.id="cf",r$20.source="c",r$20.target="f",r$20),r$19),(r$21={},r$21.data=(r$22={},r$22.id="de",r$22.source="d",r$22.target="e",r$22),r$21),(r$23={},r$23.data=(r$24={},r$24.id="bf",r$24.source="b",r$24.target="f",r$24),r$23)],r.style=[{
    selector:"node",
    style:{
     "background-color":"#666",
@@ -438,7 +438,7 @@ if (!console) {
     "target-arrow-color":"#ccc",
     "target-arrow-shape":"triangle"
    }
-  }],r.layout=(r$7={},r$7.name="grid",r$7.rows=1,r$7),r),new Global.cytoscape(a$1));
+  }],r.layout=(r$25={},r$25.name="grid",r$25.rows=2,r$25),r),new Global.cytoscape(a$1));
  };
  attr=Html.attr=Runtime.Class({},null,attr);
  Operators.FailWith=function(msg)

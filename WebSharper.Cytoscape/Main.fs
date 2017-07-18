@@ -235,8 +235,8 @@ module Definition =
             Required = []
             Optional =
                 [
-                    "root", CytoscapeClass.Type
-                    "goal", CytoscapeClass.Type
+                    "root", CytoscapeClass.Type + T<string>
+                    "goal", CytoscapeClass.Type + T<string>
                     "weight", T<JavaScript.Function>
                     "heuristic", T<JavaScript.Function>
                     "visit", T<JavaScript.Function>
@@ -259,9 +259,9 @@ module Definition =
             "collection" => T<unit> + T<string> + !| ElementObject.Type ^-> TSelf
             "getElementById" => T<string> ^-> TSelf
             "$" => T<string> ^-> TSelf
-            "elements" => T<string> ^-> TSelf
-            "nodes" => T<string> ^-> TSelf
-            "edges" => T<string> ^-> TSelf
+            "elements" => T<unit> + T<string> ^-> TSelf
+            "nodes" => T<unit> + T<string> ^-> TSelf
+            "edges" => T<unit> + T<string> ^-> TSelf
             "filter" => (T<string> + T<JavaScript.Function>) ^-> TSelf
             "batch" => T<JavaScript.Function> ^-> TSelf
             "startBatch" => T<unit> ^-> TSelf
@@ -314,7 +314,7 @@ module Definition =
             "layout" => LayoutOptions.Type ^-> LayoutClass
 
             //Style
-            "style" => T<unit> ^-> T<JavaScript.CSSStyleDeclaration> + T<JavaScript.CSSStyleDeclaration> ^-> TSelf
+            "style" => T<unit> ^-> T<obj> + T<obj> ^-> TSelf
 
             //Export
             "png" => ImageOptions.Type ^-> T<JavaScript.ImageData>
@@ -393,9 +393,9 @@ module Definition =
             "classes" => !? T<string> ^-> TSelf
             "fleshClass" => T<string> * !? T<int> ^-> TSelf
             "hasClass" => T<string> ^-> T<bool>
-            "style" => T<unit> ^-> T<JavaScript.CSSStyleDeclaration> + T<string> ^-> T<string> + (T<string> * T<string> ^-> TSelf) + T<obj> ^-> TSelf
+            "style" => T<unit> ^-> T<obj> + T<string> ^-> T<string> + (T<string> * T<string> ^-> TSelf) + T<obj> ^-> TSelf
             "removeStyle" => T<unit> ^-> TSelf + T<string> ^-> TSelf
-            "renderedStyle" => T<unit> ^-> T<JavaScript.CSSStyleDeclaration> ^-> TSelf + T<string> ^-> T<string>
+            "renderedStyle" => T<unit> ^-> T<obj> ^-> TSelf + T<string> ^-> T<string>
             "numericStyle" => T<string> ^-> T<string>
             "numericStyleUnits" => T<string> ^-> T<string>
             "visible" => T<unit> ^-> T<bool>

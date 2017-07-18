@@ -7,8 +7,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>4febdeb2-2544-4148-8fc8-9b5744ff167a</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>WebSharper.CytoscapeJS.Sample</RootNamespace>
-    <AssemblyName>WebSharper.CytoscapeJS.Sample</AssemblyName>
+    <RootNamespace>WebSharper.Cytoscape.Sample</RootNamespace>
+    <AssemblyName>WebSharper.Cytoscape.Sample</AssemblyName>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F2A71F9B-5D33-465A-A702-920D77279786}</ProjectTypeGuids>
     <WebSharperProject>Bundle</WebSharperProject>
     <WebSharperBundleOutputDir>Content</WebSharperBundleOutputDir>
@@ -20,7 +20,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.4.1.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Name>WebSharper.CytoscapeJS.Sample</Name>
+    <Name>WebSharper.Cytoscape.Sample</Name>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
@@ -73,9 +73,6 @@
     </Reference>
     <Reference Include="WebSharper.Cytoscape">
       <HintPath>..\build\net40\WebSharper.Cytoscape.dll</HintPath>
-    </Reference>
-    <Reference Include="WebSharper.CytoscapeJS">
-      <HintPath>..\build\net40\WebSharper.CytoscapeJS.dll</HintPath>
     </Reference>
     <Reference Include="WebSharper.InterfaceGenerator">
       <HintPath>..\packages\Zafir.4.0.171.72-beta7\lib\net40\WebSharper.InterfaceGenerator.dll</HintPath>

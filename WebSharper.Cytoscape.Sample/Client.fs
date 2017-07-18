@@ -13,7 +13,7 @@ module Client =
 
     [<SPAEntryPoint>]
     let Main () =
-        let graph = divAttr [attr.style "height:100vh;"] []
+        let graph = divAttr [attr.style "height:50vh;"] []
 
         graph
         |> Doc.RunById "main"
@@ -62,5 +62,5 @@ module Client =
                     )
                 )
             )
-        
+
         ()
