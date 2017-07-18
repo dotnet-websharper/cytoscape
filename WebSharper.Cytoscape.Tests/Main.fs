@@ -23,12 +23,12 @@ module Client =
 
             Test "Get Width" {
                 let cy = Cytoscape.Cytoscape()
-                notEqualMsg (cy.Width()) (JS.Undefined) "Constructor"
+                notEqualMsg (cy.Width()) (JS.Undefined) "Get Width"
             }
 
             Test "Get Height" {
                 let cy = Cytoscape.Cytoscape()
-                notEqualMsg (cy.Height()) (JS.Undefined) "Constructor"
+                notEqualMsg (cy.Height()) (JS.Undefined) "Get Height"
             }
 
             Test "Add element" {
@@ -44,7 +44,7 @@ module Client =
                             )
                         )
                     )
-                ) (JS.Undefined) "Constructor"
+                ) (JS.Undefined) "Add element"
             }
 
         }

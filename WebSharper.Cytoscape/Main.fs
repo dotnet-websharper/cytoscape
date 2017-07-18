@@ -5,6 +5,12 @@ open WebSharper.InterfaceGenerator
 
 module Definition =
     let CytoscapeClass = Class "cytoscape"
+    let ElesClass = Class "eles"
+    let EleClass = Class "ele"
+    let NodesClass = Class "nodes"
+    let NodeClass = Class "node"
+    let EdgesClass = Class "edges"
+    let EdgeClass = Class "edge"
 
     let Position =
         Pattern.Config "Position" {
@@ -235,8 +241,8 @@ module Definition =
             Required = []
             Optional =
                 [
-                    "root", CytoscapeClass.Type + T<string>
-                    "goal", CytoscapeClass.Type + T<string>
+                    "root", NodeClass + T<string>
+                    "goal", NodeClass + T<string>
                     "weight", T<JavaScript.Function>
                     "heuristic", T<JavaScript.Function>
                     "visit", T<JavaScript.Function>
@@ -248,115 +254,128 @@ module Definition =
                 ]
         }
 
-    CytoscapeClass
-        |+> Static [
-            Constructor (T<unit> + CytoscapeOptions.Type)
+    let BoundingBoxOptions =
+        Pattern.Config "BoundingBoxOptions" {
+            Required = []
+            Optional =
+                [
+                    "includeNodes", T<bool>
+                    "includeEdges", T<bool>
+                    "includeLabels", T<bool>
+                ]
+        }
+
+    let BFSClass =
+        Class "BFS"
+        |+> Instance [
+            "path" =? ElesClass
+            "found" =? NodeClass
         ]
+
+    let DFSClass =
+        Class "DFS"
+        |+> Instance [
+            "path" =? ElesClass
+            "found" =? NodeClass
+        ]
+
+    let DijkstraClass =
+        Class "Dijkstra"
+        |+> Instance [
+            "distanceTo" =? NodeClass + T<string> ^-> T<float>
+            "pathTo" =? NodeClass + T<string> ^-> !| NodeClass
+        ]
+
+    let AStarClass =
+        Class "AStar"
+        |+> Instance [
+            "found" =? T<bool>
+            "distance" =? T<float>
+            "path" =? ElesClass
+        ]
+
+    let FWClass =
+        Class "FW"
+        |+> Instance [
+            "distanceTo" =? (NodeClass + T<string>) * (NodeClass + T<string>) ^-> T<float>
+            "pathTo" =? (NodeClass + T<string>) * (NodeClass + T<string>) ^-> !| NodeClass
+        ]
+
+    let BFClass =
+        Class "BF"
+        |+> Instance [
+            "distanceTo" =? NodeClass + T<string> ^-> T<float>
+            "pathTo" =? NodeClass + T<string> ^-> !| NodeClass
+            "hasNegativeWeightCycle" =? T<bool>
+        ]
+
+    let KragerSteinClass =
+        Class "KragerStein"
+        |+> Instance [
+            "cut" =? EdgesClass
+            "partition1" =? NodesClass
+            "partition2" =? NodesClass
+        ]
+
+    let PageRankClass =
+        Class "PageRank"
+        |+> Instance [
+            "rank" =? NodeClass + T<string> ^-> T<float>
+        ]
+       
+    let DegreeCentralityClass =
+        Class "DegreeCentrality"
+        |+> Instance [
+            "degree" =? T<float>
+            "indegree" =? T<float>
+            "outdegree" =? T<float>
+        ]
+
+    let DegreeCentralityNClass =
+        Class "DegreeCentralityN"
+        |+> Instance [
+            "degree" =? NodeClass + T<string> ^-> T<float>
+            "indegree" =? NodeClass + T<string> ^-> T<float>
+            "outdegree" =? NodeClass + T<string> ^-> T<float>
+        ]
+
+    let BetweennessCentralityClass =
+        Class "BetweennessCentrality"
+        |+> Instance [
+            "betweenness" =? NodeClass + T<string> ^-> T<float>
+            "betweennessNormalized" =? NodeClass + T<string> ^-> T<float>
+        ]
+
+    let Box =
+        Pattern.Config "Box" {
+            Required = []
+            Optional =
+                [
+                    "x1", T<float>
+                    "y1", T<float>
+                    "x2", T<float>
+                    "y2", T<float>
+                    "w", T<float>
+                    "h", T<float>
+                ]
+        }
+
+    EleClass
         |+> Instance [
             //Graph manipulation
-            "add" => ElementObject.Type + !| ElementObject.Type ^-> TSelf
-            "remove" => ElementObject.Type + T<string> ^-> TSelf
-            "collection" => T<unit> + T<string> + !| ElementObject.Type ^-> TSelf
-            "getElementById" => T<string> ^-> TSelf
-            "$" => T<string> ^-> TSelf
-            "elements" => T<unit> + T<string> ^-> TSelf
-            "nodes" => T<unit> + T<string> ^-> TSelf
-            "edges" => T<unit> + T<string> ^-> TSelf
-            "filter" => (T<string> + T<JavaScript.Function>) ^-> TSelf
-            "batch" => T<JavaScript.Function> ^-> TSelf
-            "startBatch" => T<unit> ^-> TSelf
-            "endBatch" => T<unit> ^-> TSelf
-            "destroy" => T<unit> ^-> TSelf
-            "scratch" => T<unit> + T<string> + (T<string> * T<string>) ^-> TSelf
-            "removeScratch" => T<string> ^-> TSelf
-
-            //Events
-            "on" => (T<string> * T<JavaScript.Function> ^-> TSelf) + (T<string> * T<string> * T<JavaScript.Function> ^-> TSelf)
-            "promiseOn" => T<string> * !? T<string> ^-> TSelf
-            "one" => (T<string> * T<JavaScript.Function> ^-> TSelf) + (T<string> * T<string> * T<JavaScript.Function> ^-> TSelf)
-            "off" => (T<string> * T<JavaScript.Function> ^-> TSelf) + (T<string> * T<string> * T<JavaScript.Function> ^-> TSelf)
-            "trigger" => T<string> *+ T<obj> ^-> TSelf
-            "ready" => T<JavaScript.Function> ^-> TSelf
-
-            //Viewport manipulation
-            "container" => T<unit> ^-> T<JavaScript.Dom.Element>
-            "center" => T<unit> + !| ElementObject.Type ^-> TSelf
-            "fit" => !? !| ElementObject.Type * !? T<string> ^-> TSelf
-            "reset" => T<unit> ^-> TSelf
-            "pan" => T<unit> + Position.Type ^-> TSelf
-            "panBy" => Position.Type ^-> TSelf
-            "panningEnabled" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
-            "userPanningEnabled" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
-            "zoom" => T<unit> + T<string> + ZoomOptions.Type ^-> TSelf
-            "zoomingEnabled" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
-            "userZoomingEnabled" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
-            "minZoom" => (T<unit> ^-> T<bool>) + (T<float> ^-> TSelf)
-            "maxZoom" => (T<unit> ^-> T<bool>) + (T<float> ^-> TSelf)
-            "viewport" => T<float> * Position.Type ^-> TSelf
-            "boxSelectionEnabled" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
-            "extent" => T<unit> ^-> TSelf
-            "autolock" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
-            "autoungrabify" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
-            "autounselectify" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
-            "forcerender" => T<unit> ^-> TSelf
-            "resize" => T<unit> ^-> TSelf
-
-            //Animation
-            "animated" => T<unit> ^-> T<bool>
-            "animate" => AnimateOptions.Type ^-> TSelf
-            "animation" => AnimateOptions.Type ^-> TSelf
-            "delay" => T<int> * T<JavaScript.Function> ^-> TSelf
-            "delayAnimation" => T<int> ^-> TSelf
-            "stop" => T<bool> * T<bool> ^-> TSelf
-            "clearQueue" => T<unit> ^-> TSelf
-
-            //Layout
-            "layout" => LayoutOptions.Type ^-> LayoutClass
-
-            //Style
-            "style" => T<unit> ^-> T<obj> + T<obj> ^-> TSelf
-
-            //Export
-            "png" => ImageOptions.Type ^-> T<JavaScript.ImageData>
-            "jpg" => ImageOptions.Type ^-> T<JavaScript.ImageData>
-            "json" => T<unit> ^-> T<obj> + T<obj> ^-> TSelf
-
-            //Collections
-            //Graph manipulation
-            "remove" => T<unit> ^-> TSelf
             "removed" => T<unit> ^-> T<bool>
             "inside" => T<unit> ^-> T<bool>
-            "restore" => T<unit> ^-> TSelf
-            "clone" => T<unit> ^-> TSelf
-            "move" => Location.Type ^-> TSelf
 
             //Data
-            "data" => T<string> + (T<string> + T<string>) + T<obj> ^-> TSelf
-            "removeData" => T<unit> + T<string> ^-> TSelf
+            "scratch" => T<string> + (T<string> * T<obj>) ^-> TSelf
+            "removeScratch" => T<string> ^-> TSelf
             "id" => T<unit> ^-> T<string>
-            "jsons" => T<unit> ^-> !| T<obj>
+            "json" => T<unit> ^-> T<obj>
             "group" => T<unit> ^-> !| T<string>
             "isNode" => T<unit> ^-> T<bool>
             "isEdge" => T<unit> ^-> T<bool>
-            "isSimple" => T<unit> ^-> T<bool>
 
-            //Metadata
-            "degree" => T<bool> ^-> T<int>
-            "indegree" => T<bool> ^-> T<int>
-            "outdegree" => T<bool> ^-> T<int>
-            "totalDegree" => T<bool> ^-> T<int>
-            "minDegree" => T<bool> ^-> T<int>
-            "maxDegree" => T<bool> ^-> T<int>
-            "minIndegree" => T<bool> ^-> T<int>
-            "maxIndegree" => T<bool> ^-> T<int>
-            "minOutdegree" => T<bool> ^-> T<int>
-            "maxOutdegree" => T<bool> ^-> T<int>
-
-            //Positions and dimensions
-            "position" => (T<unit> ^-> Position.Type) + (T<string> ^-> T<int>) + (T<string> * T<int> ^-> TSelf) + (Position.Type ^-> TSelf)
-            "positions" => T<JavaScript.Function> ^-> TSelf + Position.Type ^-> TSelf
-            "renderedPosition" => (T<unit> ^-> Position.Type) + (T<string> ^-> T<int>) + (T<string> * T<int> ^-> TSelf) + (Position.Type ^-> TSelf)
-            "relativePosition" => (T<unit> ^-> Position.Type) + (T<string> ^-> T<int>) + (T<string> * T<int> ^-> TSelf) + (Position.Type ^-> TSelf)
+            //Positions and dimensions    
             "width" => T<unit> ^-> T<int>
             "outerWidth" => T<unit> ^-> T<int>
             "renderedWidth" => T<unit> ^-> T<int>
@@ -365,36 +384,14 @@ module Definition =
             "outerHeight" => T<unit> ^-> T<int>
             "renderedHeight" => T<unit> ^-> T<int>
             "renderedOuterHeight" => T<unit> ^-> T<int>
-            "grabbed" => T<unit> ^-> T<bool>
-            "grabbable" => T<unit> ^-> T<bool>
-            "grabify" => T<unit> ^-> TSelf
-            "ungrabify" => T<unit> ^-> TSelf
-            "locked" => T<unit> ^-> T<bool>
-            "lock" => T<unit> ^-> TSelf
-            "unlock" => T<unit> ^-> TSelf
             "active" => T<unit> ^-> T<bool>
-
-            //Layout
-            "layoutPositions" => LayoutClass * LayoutOptions.Type * T<JavaScript.Function> ^-> !| Position.Type
-            "layoutDimensions" => LayoutOptions.Type ^-> !| Position.Type
-
+            
             //Selection
             "selected" => T<unit> ^-> T<bool>
-            "select" => T<unit> ^-> TSelf
-            "unselect" => T<unit> ^-> TSelf
             "selectable" => T<unit> ^-> T<bool>
-            "selectify" => T<unit> ^-> TSelf
-            "unselectify" => T<unit> ^-> TSelf
-
+            
             //Stlye
-            "addClass" => T<string> ^-> TSelf
-            "removeClass" => T<string> ^-> TSelf
-            "toggleClass" => T<string> * !? T<bool> ^-> TSelf
-            "classes" => !? T<string> ^-> TSelf
-            "fleshClass" => T<string> * !? T<int> ^-> TSelf
             "hasClass" => T<string> ^-> T<bool>
-            "style" => T<unit> ^-> T<obj> + T<string> ^-> T<string> + (T<string> * T<string> ^-> TSelf) + T<obj> ^-> TSelf
-            "removeStyle" => T<unit> ^-> TSelf + T<string> ^-> TSelf
             "renderedStyle" => T<unit> ^-> T<obj> ^-> TSelf + T<string> ^-> T<string>
             "numericStyle" => T<string> ^-> T<string>
             "numericStyleUnits" => T<string> ^-> T<string>
@@ -402,6 +399,66 @@ module Definition =
             "hidden" => T<unit> ^-> T<bool>
             "effectiveOpacity" => T<unit> ^-> T<float>
             "transparent" => T<unit> ^-> T<bool>
+            
+            //Animation
+            "animated" => T<unit> ^-> T<bool>
+            "animation" => AnimateOptions.Type ^-> TSelf
+            "delayAnimation" => T<int> ^-> TSelf
+
+        ]
+        |> ignore
+
+    ElesClass
+        |=> Inherits EleClass
+        |+> Instance [
+            //Graph manipulation
+            "remove" => T<unit> ^-> TSelf
+            "restore" => T<unit> ^-> TSelf
+            "clone" => T<unit> ^-> TSelf
+            "move" => Location.Type ^-> TSelf
+
+            //Events
+            "on" => (T<string> * T<JavaScript.Function> ^-> TSelf) + (T<string> * T<string> * T<JavaScript.Function> ^-> TSelf)
+            "promiseOn" => T<string> * !? T<string> ^-> TSelf
+            "one" => (T<string> * T<JavaScript.Function> ^-> TSelf) + (T<string> * T<string> * T<JavaScript.Function> ^-> TSelf)
+            "off" => (T<string> * T<JavaScript.Function> ^-> TSelf) + (T<string> * T<string> * T<JavaScript.Function> ^-> TSelf)
+            "trigger" => T<string> *+ T<obj> ^-> TSelf
+            "ready" => T<JavaScript.Function> ^-> TSelf
+            
+            //Data
+            "data" => T<string> + (T<string> + T<string>) + T<obj> ^-> TSelf
+            "removeData" => T<unit> + T<string> ^-> TSelf
+            "jsons" => T<unit> ^-> !| T<obj>
+            "isLoop" => T<unit> ^-> T<bool>
+            "isSimple" => T<unit> ^-> T<bool>
+
+            //Positions and dimensions    
+            "boundingBox" => BoundingBoxOptions.Type ^-> Box.Type
+            "renderedBoundingBox" => BoundingBoxOptions.Type ^-> Box.Type
+            
+            //Layout
+            "layout" => LayoutOptions.Type ^-> LayoutClass
+
+            //Selection
+            "select" => T<unit> ^-> TSelf
+            "unselect" => T<unit> ^-> TSelf
+            "selectify" => T<unit> ^-> TSelf
+            "unselectify" => T<unit> ^-> TSelf
+            
+            //Stlye
+            "addClass" => T<string> ^-> TSelf
+            "removeClass" => T<string> ^-> TSelf
+            "toggleClass" => T<string> * !? T<bool> ^-> TSelf
+            "classes" => !? T<string> ^-> TSelf
+            "fleshClass" => T<string> * !? T<int> ^-> TSelf
+            "style" => T<unit> ^-> T<obj> + T<string> ^-> T<string> + (T<string> * T<string> ^-> TSelf) + T<obj> ^-> TSelf        
+            "removeStyle" => T<unit> ^-> TSelf + T<string> ^-> TSelf
+
+            //Animation
+            "animate" => AnimateOptions.Type ^-> TSelf
+            "delay" => T<int> * T<JavaScript.Function> ^-> TSelf
+            "stop" => T<bool> * T<bool> ^-> TSelf
+            "clearQueue" => T<unit> ^-> TSelf
 
             //Comparison
             "same" => TSelf ^-> T<bool>
@@ -441,16 +498,75 @@ module Definition =
             "openNeighborhood" => !? T<string> ^-> TSelf
             "closedNeighborhood" => !? T<string> ^-> TSelf
             "componenets" => T<unit> ^-> TSelf
+            
+            //Algorithms
+            "breadthFirstSearch" => AlgorithmOptions.Type ^-> BFSClass.Type
+            "depthFirstSearch" => AlgorithmOptions.Type ^-> DFSClass.Type
+            "dijkstra" => AlgorithmOptions.Type ^-> DijkstraClass.Type
+            "aStar" => AlgorithmOptions.Type ^-> AStarClass.Type
+            "floydWarshall" => AlgorithmOptions.Type ^-> FWClass.Type
+            "bellmanFord" => AlgorithmOptions.Type ^-> BFClass.Type
+            "kruskal" => !? T<JavaScript.Function> ^-> ElesClass
+            "kragerStein" => T<unit> ^-> KragerSteinClass.Type
+            "pageRank" => AlgorithmOptions.Type ^-> PageRankClass.Type
+            "degreeCentrality" => AlgorithmOptions.Type ^-> DegreeCentralityClass.Type
+            "degreeCentralityNormalized" => AlgorithmOptions.Type ^-> DegreeCentralityNClass.Type
+            "closenessCentrality" => AlgorithmOptions.Type ^-> T<float>
+            "closenessCentralityNormalized" => AlgorithmOptions.Type ^-> T<float>
+            "betweennessCentrality" => AlgorithmOptions.Type ^-> BetweennessCentralityClass.Type
+        ]
+        |> ignore
+
+    NodeClass
+        |+> Instance [
+            //Metadata
+            "degree" => T<bool> ^-> T<int>
+            "indegree" => T<bool> ^-> T<int>
+            "outdegree" => T<bool> ^-> T<int>
+            "totalDegree" => T<bool> ^-> T<int>
+            "minDegree" => T<bool> ^-> T<int>
+            "maxDegree" => T<bool> ^-> T<int>
+            "minIndegree" => T<bool> ^-> T<int>
+            "maxIndegree" => T<bool> ^-> T<int>
+            "minOutdegree" => T<bool> ^-> T<int>
+            "maxOutdegree" => T<bool> ^-> T<int>
+
+            //Positions and dimensions
+            "position" => (T<unit> ^-> Position.Type) + (T<string> ^-> T<int>) + (T<string> * T<int> ^-> TSelf) + (Position.Type ^-> TSelf)            
+            "renderedPosition" => (T<unit> ^-> Position.Type) + (T<string> ^-> T<int>) + (T<string> * T<int> ^-> TSelf) + (Position.Type ^-> TSelf)
+            "relativePosition" => (T<unit> ^-> Position.Type) + (T<string> ^-> T<int>) + (T<string> * T<int> ^-> TSelf) + (Position.Type ^-> TSelf)
+            "grabbed" => T<unit> ^-> T<bool>
+            "grabbable" => T<unit> ^-> T<bool>
+            "locked" => T<unit> ^-> T<bool>
+
+            //Layout
+            "layoutDimensions" => LayoutOptions.Type ^-> !| Position.Type
+
+            //Compound nodes
+            "isParent" => T<unit> ^-> T<bool>
+            "isChildless" => T<unit> ^-> T<bool>
+            "isChild" => T<unit> ^-> T<bool>
+            "isOrphan" => T<unit> ^-> T<bool>
+        ]
+        |> ignore
+
+    NodesClass
+        |=> Inherits NodeClass
+        |+> Instance [
+            //Positions and dimensions
+            "positions" => T<JavaScript.Function> ^-> TSelf + Position.Type ^-> TSelf
+            "grabify" => T<unit> ^-> TSelf
+            "ungrabify" => T<unit> ^-> TSelf
+            "lock" => T<unit> ^-> TSelf
+            "unlock" => T<unit> ^-> TSelf
+
+            //Layout
+            "layoutPositions" => LayoutClass * LayoutOptions.Type * T<JavaScript.Function> ^-> !| Position.Type
+        
+            //Traversing
             "edgesWith" => TSelf + T<string> ^-> TSelf
             "edgesTo" => TSelf + T<string> ^-> TSelf
-            "connectedNodes" => !? T<string> ^-> TSelf
             "connectedEdges" => !? T<string> ^-> TSelf
-            "source" => !? T<string> ^-> TSelf
-            "sources" => !? T<string> ^-> TSelf
-            "target" => !? T<string> ^-> TSelf
-            "targets" => !? T<string> ^-> TSelf
-            "parallelEdges" => !? T<string> ^-> TSelf
-            "codirectedEdges" => !? T<string> ^-> TSelf
             "roots" => !? T<string> ^-> TSelf
             "leaves" => !? T<string> ^-> TSelf
             "outgoers" => !? T<string> ^-> TSelf
@@ -458,27 +574,7 @@ module Definition =
             "incomers" => !? T<string> ^-> TSelf
             "predecessors" => !? T<string> ^-> TSelf
 
-            //Algorithms
-            "breadthFirstSearch" => AlgorithmOptions.Type ^-> TSelf
-            "depthFirstSearch" => AlgorithmOptions.Type ^-> TSelf
-            "dijkstra" => AlgorithmOptions.Type ^-> TSelf
-            "aStar" => AlgorithmOptions.Type ^-> TSelf
-            "floydWarshall" => AlgorithmOptions.Type ^-> TSelf
-            "bellmanFord" => AlgorithmOptions.Type ^-> TSelf
-            "kruskal" => !? T<JavaScript.Function> ^-> TSelf
-            "kragerStein" => T<unit> ^-> TSelf
-            "pageRank" => AlgorithmOptions.Type ^-> TSelf
-            "degreeCentrality" => T<unit> ^-> TSelf
-            "degreeCentralityNormalized" => T<unit> ^-> TSelf
-            "closenessCentrality" => AlgorithmOptions.Type ^-> TSelf
-            "closenessCentralityNormalized" => AlgorithmOptions.Type ^-> TSelf
-            "betweennessCentrality" => AlgorithmOptions.Type ^-> TSelf
-
             //Compound nodes
-            "isParent" => T<unit> ^-> T<bool>
-            "isChildless" => T<unit> ^-> T<bool>
-            "isChild" => T<unit> ^-> T<bool>
-            "isOrphan" => T<unit> ^-> T<bool>
             "parent" => !? T<string> ^-> TSelf
             "ancestors" => !? T<string> ^-> TSelf
             "commonAncestors" => !? T<string> ^-> TSelf
@@ -487,6 +583,106 @@ module Definition =
             "children" => !? T<string> ^-> TSelf
             "descendants" => !? T<string> ^-> TSelf
             "siblings" => !? T<string> ^-> TSelf
+        ]
+        |> ignore
+
+    EdgeClass
+        |+> Instance [
+            //Traversing
+            "source" => !? T<string> ^-> TSelf
+            "target" => !? T<string> ^-> TSelf
+        ]  
+        |> ignore 
+
+    EdgesClass
+        |=> Inherits EdgeClass
+        |+> Instance [
+            //Traversing
+            "connectedNodes" => !? T<string> ^-> TSelf
+            "sources" => !? T<string> ^-> TSelf
+            "targets" => !? T<string> ^-> TSelf
+            "parallelEdges" => !? T<string> ^-> TSelf
+            "codirectedEdges" => !? T<string> ^-> TSelf
+        ] 
+        |> ignore
+
+    CytoscapeClass
+        |+> Static [
+            Constructor (T<unit> + CytoscapeOptions.Type)
+        ]
+        |+> Instance [
+            //Graph manipulation
+            "add" => ElementObject.Type + !| ElementObject.Type ^-> TSelf
+            "remove" => ElementObject.Type + T<string> ^-> TSelf
+            "collection" => T<unit> + T<string> + !| ElementObject.Type ^-> TSelf
+            "getElementById" => T<string> ^-> TSelf
+            "of" => T<string>?str ^-> ElesClass
+                |> WithInline "$($str)"
+            "of" => T<unit> ^-> ElesClass
+                |> WithInline "$()"
+            "elements" => T<unit> + T<string> ^-> ElesClass
+            "nodes" => T<unit> + T<string> ^-> NodesClass
+            "edges" => T<unit> + T<string> ^-> EdgesClass
+            "filter" => (T<string> + T<JavaScript.Function>) ^-> ElesClass
+            "batch" => T<JavaScript.Function> ^-> TSelf
+            "startBatch" => T<unit> ^-> TSelf
+            "endBatch" => T<unit> ^-> TSelf
+            "destroy" => T<unit> ^-> TSelf
+            "scratch" => T<unit> + T<string> + (T<string> * T<string>) ^-> TSelf
+            "removeScratch" => T<string> ^-> TSelf
+
+            //Events
+            "on" => (T<string> * T<JavaScript.Function> ^-> TSelf) + (T<string> * T<string> * T<JavaScript.Function> ^-> TSelf)
+            "promiseOn" => T<string> * !? T<string> ^-> TSelf
+            "one" => (T<string> * T<JavaScript.Function> ^-> TSelf) + (T<string> * T<string> * T<JavaScript.Function> ^-> TSelf)
+            "off" => (T<string> * T<JavaScript.Function> ^-> TSelf) + (T<string> * T<string> * T<JavaScript.Function> ^-> TSelf)
+            "trigger" => T<string> *+ T<obj> ^-> TSelf
+            "ready" => T<JavaScript.Function> ^-> TSelf
+
+            //Viewport manipulation
+            "container" => T<unit> ^-> T<JavaScript.Dom.Element>
+            "center" => T<unit> + !| ElementObject.Type ^-> TSelf
+            "fit" => !? !| ElementObject.Type * !? T<string> ^-> TSelf
+            "reset" => T<unit> ^-> TSelf
+            "pan" => T<unit> + Position.Type ^-> TSelf
+            "panBy" => Position.Type ^-> TSelf
+            "panningEnabled" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
+            "userPanningEnabled" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
+            "zoom" => T<unit> + T<string> + ZoomOptions.Type ^-> TSelf
+            "zoomingEnabled" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
+            "userZoomingEnabled" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
+            "minZoom" => (T<unit> ^-> T<bool>) + (T<float> ^-> TSelf)
+            "maxZoom" => (T<unit> ^-> T<bool>) + (T<float> ^-> TSelf)
+            "viewport" => T<float> * Position.Type ^-> TSelf
+            "boxSelectionEnabled" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
+            "width" => T<unit> ^-> T<int>
+            "height" => T<unit> ^-> T<int>
+            "extent" => T<unit> ^-> TSelf
+            "autolock" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
+            "autoungrabify" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
+            "autounselectify" => (T<unit> ^-> T<bool>) + (T<bool> ^-> TSelf)
+            "forcerender" => T<unit> ^-> TSelf
+            "resize" => T<unit> ^-> TSelf
+
+            //Animation
+            "animated" => T<unit> ^-> T<bool>
+            "animate" => AnimateOptions.Type ^-> TSelf
+            "animation" => AnimateOptions.Type ^-> TSelf
+            "delay" => T<int> * T<JavaScript.Function> ^-> TSelf
+            "delayAnimation" => T<int> ^-> TSelf
+            "stop" => T<bool> * T<bool> ^-> TSelf
+            "clearQueue" => T<unit> ^-> TSelf
+
+            //Layout
+            "layout" => LayoutOptions.Type ^-> LayoutClass
+
+            //Style
+            "style" => T<unit> ^-> T<obj> + T<obj> ^-> TSelf
+
+            //Export
+            "png" => ImageOptions.Type ^-> T<JavaScript.ImageData>
+            "jpg" => ImageOptions.Type ^-> T<JavaScript.ImageData>
+            "json" => T<unit> ^-> T<obj> + T<obj> ^-> TSelf
         ]
         |> ignore
 
@@ -511,6 +707,25 @@ module Definition =
                 Location
                 AlgorithmOptions
                 StyleConfig
+                BoundingBoxOptions
+                BFSClass
+                DFSClass
+                DijkstraClass
+                AStarClass
+                FWClass
+                BFClass
+                KragerSteinClass
+                PageRankClass
+                DegreeCentralityClass
+                DegreeCentralityNClass
+                BetweennessCentralityClass
+                Box
+                EleClass
+                ElesClass
+                NodeClass
+                NodesClass
+                EdgeClass
+                EdgesClass
             ]
         ]
 

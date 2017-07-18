@@ -13,11 +13,11 @@ module Client =
 
     [<SPAEntryPoint>]
     let Main () =
-        let graph = divAttr [attr.style "height:50vh;"] []
+        let graph = divAttr [attr.style "height:100vh;"] []
 
         graph
         |> Doc.RunById "main"
-        
+
         let cy = 
             Cytoscape(
                 CytoscapeOptions(
@@ -31,6 +31,7 @@ module Client =
                             ElementObject(Data = ElementData(Id = "e"))
                             ElementObject(Data = ElementData(Id = "f"))
                             ElementObject(Data = ElementData(Id = "ab", Source = "a", Target = "b"))
+                            ElementObject(Data = ElementData(Id = "ba", Source = "b", Target = "a"))
                             ElementObject(Data = ElementData(Id = "bc", Source = "b", Target = "c"))
                             ElementObject(Data = ElementData(Id = "ad", Source = "a", Target = "d"))
                             ElementObject(Data = ElementData(Id = "cf", Source = "c", Target = "f"))
@@ -53,6 +54,16 @@ module Client =
                                     "line-color", "#ccc" :> obj
                                     "target-arrow-color", "#ccc" :> obj
                                     "target-arrow-shape", "triangle" :> obj
+                                    "curve-style", "bezier" :> obj
+                                ]
+                            )
+                            StyleConfig(
+                                selector = ":selected",
+                                style = New [
+                                    "background-color", "#070" :> obj
+                                    "line-color", "#070" :> obj
+                                    "target-arrow-color", "#070" :> obj
+                                    "text-outline-color", "#000" :> obj
                                 ]
                             )
                         |],
@@ -63,4 +74,4 @@ module Client =
                 )
             )
 
-        ()
+        cy.Elements().Kruskal().Select()

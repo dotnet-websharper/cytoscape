@@ -13,16 +13,6 @@ let main =
         .Embed([])
         .References(fun r -> [])
 
-let sample =
-    bt.Zafir.BundleWebsite("WebSharper.Cytoscape.Sample")
-        .SourcesFromProject()
-        .Embed([])
-        .References(fun r ->
-            [
-                r.Project(main)
-                r.NuGet("Zafir.UI.Next").Latest(true).Reference()
-            ])
-
 let tests =
     bt.Zafir.SiteletWebsite("WebSharper.Cytoscape.Tests")
         .SourcesFromProject()
@@ -37,7 +27,6 @@ let tests =
 bt.Solution [
     main
     tests
-    sample
 
     bt.NuGet.CreatePackage()
         .Configure(fun c ->
