@@ -137,21 +137,21 @@ The original [documentation](http://js.cytoscape.org/#notation/functions) talks 
 
 The algorithms are returning custom objects too with the documented *read only* properties. The returning classes are:
 
-| Algorithm | Returned class |
-|:----------|:---------------|
-|breadthFirstSearch| BFS |
-|depthFirstSearch|DFS|
-|dijkstra|Disjktra|
-|aStar|AStar|
-|floydWarshall|FW|
-|bellmanFord|BF|
-|kruskal|Eles|
-|kargerStein|KargerStein|
-|pageRank|PageRank|
-|degreeCentrality|float|
-|degreeCentralityNormalized|float|
-|closenessCentrality|ClosenessCentrality|
-|closenessCentralityNormalized|ClosenessCentralityN|
-|betweennessCentrality|BetweennessCentrality|
+| Algorithm                     | Returned class        |
+|:------------------------------|:----------------------|
+| breadthFirstSearch            | BFS                   |
+| depthFirstSearch              | DFS                   |
+| dijkstra                      | Disjktra              |
+| aStar                         | AStar                 |
+| floydWarshall                 | FW                    |
+| bellmanFord                   | BF                    |
+| kruskal                       | Eles                  |
+| kargerStein                   | KargerStein           |
+| pageRank                      | PageRank              |
+| degreeCentrality              | float                 |
+| degreeCentralityNormalized    | float                 |
+| closenessCentrality           | ClosenessCentrality   |
+| closenessCentralityNormalized | ClosenessCentralityN  |
+| betweennessCentrality         | BetweennessCentrality |
 
 To see the properties, please read the original [documentation](http://js.cytoscape.org/#collection/algorithms).
