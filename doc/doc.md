@@ -1,6 +1,6 @@
 # Cytoscape
 
-With [Cytoscape]() you're able to render big graphs with labeled nodes, weighted edges on the screen. This extension even allows you to do higher level graph theory calculations on your website. The bind is close to the original JavaScript implementation with some changes.
+With [Cytoscape](http://js.cytoscape.org) you're able to render big graphs with labeled nodes, weighted edges on the screen. This extension even allows you to do higher level graph theory calculations on your website. The bind is close to the original JavaScript implementation with some changes.
 
 ## Configuration
 
@@ -119,3 +119,39 @@ let cy =
 ```
 
 And having a `<div id="main"></div>` in our html file.
+
+## New types
+
+The original [documentation](http://js.cytoscape.org/#notation/functions) talks about having multiple types in the library. These types are implemented in WebSharper too.
+
+| Documentation | F# implementation |
+|:--------------|:------------------|
+| cy            | Cytoscape         |
+| eles          | Eles              |
+| ele           | Ele               |
+| nodes         | Nodes             |
+| node          | Node              |
+| edges         | Edges             |
+| edge          | Edge              |
+| layout        | Layout            |
+
+The algorithms are returning custom objects too with the documented *read only* properties. The returning classes are:
+
+| Algorithm | Returned class |
+|:----------|:---------------|
+|breadthFirstSearch| BFS |
+|depthFirstSearch|DFS|
+|dijkstra|Disjktra|
+|aStar|AStar|
+|floydWarshall|FW|
+|bellmanFord|BF|
+|kruskal|Eles|
+|kargerStein|KargerStein|
+|pageRank|PageRank|
+|degreeCentrality|float|
+|degreeCentralityNormalized|float|
+|closenessCentrality|ClosenessCentrality|
+|closenessCentralityNormalized|ClosenessCentralityN|
+|betweennessCentrality|BetweennessCentrality|
+
+To see the properties, please read the original [documentation](http://js.cytoscape.org/#collection/algorithms).
