@@ -53,7 +53,7 @@ The same code in F#:
 let cy = 
     Cytoscape(
         CytoscapeOptions(
-            Container = Document.GetElementById('cy'),
+            Container = Document.GetElementById("main"),
             Elements = 
                 [|
                     ElementObject(Data = ElementData(Id = "a"))
@@ -65,23 +65,23 @@ let cy =
                     StyleConfig(
                         selector = "node",
                         style = New [
-                            "background-color", "#666" :> obj
-                            "label", "data(id)" :> obj
+                            "background-color" => "#666"
+                            "label" => "data(id)"
                         ]
                     )
                     StyleConfig(
                         selector = "edge",
                         style = New [
-                            "width", "3" :> obj
-                            "line-color", "#ccc" :> obj
-                            "target-arrow-color", "#ccc" :> obj
-                            "target-arrow-shape", "triangle" :> obj
+                            "width" => "3"
+                            "line-color" => "#ccc"
+                            "target-arrow-color" => "#ccc"
+                            "target-arrow-shape" => "triangle"
                         ]
                     )
                 |],
             Layout = LayoutOptions(
                 Name = "grid",
-                Rows = 2
+                Rows = 1
             )
         )
     )

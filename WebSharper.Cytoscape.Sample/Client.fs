@@ -26,17 +26,17 @@ module Client =
                         [|
                             ElementObject(Data = ElementData(Id = "a"))
                             ElementObject(Data = ElementData(Id = "b"))
-                            ElementObject(Data = ElementData(Id = "c"))
-                            ElementObject(Data = ElementData(Id = "d"))
-                            ElementObject(Data = ElementData(Id = "e"))
-                            ElementObject(Data = ElementData(Id = "f"))
+                            //ElementObject(Data = ElementData(Id = "c"))
+                            //ElementObject(Data = ElementData(Id = "d"))
+                            //ElementObject(Data = ElementData(Id = "e"))
+                            //ElementObject(Data = ElementData(Id = "f"))
                             ElementObject(Data = ElementData(Id = "ab", Source = "a", Target = "b"))
-                            ElementObject(Data = ElementData(Id = "ba", Source = "b", Target = "a"))
-                            ElementObject(Data = ElementData(Id = "bc", Source = "b", Target = "c"))
-                            ElementObject(Data = ElementData(Id = "ad", Source = "a", Target = "d"))
-                            ElementObject(Data = ElementData(Id = "cf", Source = "c", Target = "f"))
-                            ElementObject(Data = ElementData(Id = "de", Source = "d", Target = "e"))
-                            ElementObject(Data = ElementData(Id = "bf", Source = "b", Target = "f"))
+                            //ElementObject(Data = ElementData(Id = "ba", Source = "b", Target = "a"))
+                            //ElementObject(Data = ElementData(Id = "bc", Source = "b", Target = "c"))
+                            //ElementObject(Data = ElementData(Id = "ad", Source = "a", Target = "d"))
+                            //ElementObject(Data = ElementData(Id = "cf", Source = "c", Target = "f"))
+                            //ElementObject(Data = ElementData(Id = "de", Source = "d", Target = "e"))
+                            //ElementObject(Data = ElementData(Id = "bf", Source = "b", Target = "f"))
                         |],
                     Style = 
                         [|
@@ -69,9 +69,9 @@ module Client =
                         |],
                     Layout = LayoutOptions(
                         Name = "grid",
-                        Rows = 2
+                        Rows = 1
                     )
                 )
             )
-
-        cy.Elements().Kruskal().Select()
+        ()
+        //cy.Elements().Kruskal().Select()
