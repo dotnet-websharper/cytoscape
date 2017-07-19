@@ -31,6 +31,10 @@ module Definition =
                     "parent", T<string> 
                     "source", T<string>
                     "target", T<string>
+                    "weight", T<float>
+                    "faveColor", T<string>
+                    "faveShape", T<string>
+                    "strength", T<float>
                 ]
         }
 
