@@ -35,6 +35,7 @@ module Definition =
                     "faveColor", T<string>
                     "faveShape", T<string>
                     "strength", T<float>
+                    "name", T<string>
                 ]
         }
 
