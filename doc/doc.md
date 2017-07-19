@@ -155,3 +155,7 @@ The algorithms are returning custom objects too with the documented *read only* 
 | betweennessCentrality         | BetweennessCentrality |
 
 To see the properties, please read the original [documentation](http://js.cytoscape.org/#collection/algorithms).
+
+## Functions
+
+In some functions we can pass functions as an argument. To do that we have to use `JavaScript.Function.Of` to convert a JavaScript function from our F# function.
