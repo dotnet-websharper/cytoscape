@@ -36,6 +36,7 @@ module Definition =
                     "faveShape", T<string>
                     "strength", T<float>
                     "name", T<string>
+                    "directed", T<bool>
                 ]
         }
 
@@ -617,7 +618,7 @@ module Definition =
         ]
         |+> Instance [
             //Graph manipulation
-            "add" => ElementObject.Type + !| ElementObject.Type ^-> TSelf
+            "add" => ElementObject.Type + !| ElementObject.Type + ElesClass ^-> TSelf
             "remove" => ElementObject.Type + T<string> ^-> TSelf
             "collection" => T<unit> + T<string> + !| ElementObject.Type ^-> TSelf
             "getElementById" => T<string> ^-> TSelf

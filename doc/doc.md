@@ -159,3 +159,32 @@ To see the properties, please read the original [documentation](http://js.cytosc
 ## Functions
 
 In some functions we can pass functions as an argument. To do that we have to use `JavaScript.Function.Of` to convert a JavaScript function from our F# function.
+
+## Custom Data fields
+
+In the original JavaScript library when creating an element, we can pass a JSON object as our data. We can't do that in F#, but we still can have custom data fields.
+
+When our JavaScript would look like this:
+
+```javascript
+elements: [
+    {
+        data: { id: 'a', custom = 'myField' }
+    }
+]
+```
+
+We can do this in F#:
+
+```fsharp
+let myOptions = ElementData(Id = "a")
+
+myOptions?custom <- "myField"
+
+...
+
+    Elements =
+        [|
+            ElementObject(myOptions)
+        |]
+```
