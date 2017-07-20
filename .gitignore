@@ -2,6 +2,8 @@
 /*.suo
 /*.Tests/Scripts/WebSharper/
 /*.Tests/Content/WebSharper/
+/*.Sample/Scripts/WebSharper/
+/*.Sample/Content/WebSharper/
 /build/
 /*/bin/
 /*/obj/
