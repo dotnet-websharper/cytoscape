@@ -2,26 +2,26 @@
 open IntelliFactory.Build
 
 let bt =
-    BuildTool().PackageId("Zafir.Cytoscape")
-        .VersionFrom("Zafir")
+    BuildTool().PackageId("WebSharper.Cytoscape")
+        .VersionFrom("WebSharper")
         .WithFSharpVersion(FSharpVersion.FSharp30)
         .WithFramework(fun f -> f.Net40)
 
 let main =
-    bt.Zafir.Extension("WebSharper.Cytoscape")
+    bt.WebSharper4.Extension("WebSharper.Cytoscape")
         .SourcesFromProject()
         .Embed([])
         .References(fun r -> [])
 
 let tests =
-    bt.Zafir.SiteletWebsite("WebSharper.Cytoscape.Tests")
+    bt.WebSharper4.SiteletWebsite("WebSharper.Cytoscape.Tests")
         .SourcesFromProject()
         .Embed([])
         .References(fun r ->
             [
                 r.Project(main)
-                r.NuGet("Zafir.Testing").Latest(true).Reference()
-                r.NuGet("Zafir.UI.Next").Latest(true).Reference()
+                r.NuGet("WebSharper.Testing").Latest(true).Reference()
+                r.NuGet("WebSharper.UI.Next").Latest(true).Reference()
             ])
 
 bt.Solution [
