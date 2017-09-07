@@ -31,7 +31,7 @@ bt.Solution [
     bt.NuGet.CreatePackage()
         .Configure(fun c ->
             { c with
-                Title = Some "WebSharper.Cytoscape"
+                Title = Some "WebSharper bindings for Cytoscape"
                 LicenseUrl = Some "http://websharper.com/licensing"
                 ProjectUrl = Some "https://github.com/intellifactory/websharper.cytoscape"
                 Description = "WebSharper Extension for Cytoscape 3.1.3"
