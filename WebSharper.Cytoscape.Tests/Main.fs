@@ -49,12 +49,10 @@ module Client =
 
         }
 
-#if ZAFIR
     let RunTests() =
         Runner.RunTests [
             Tests
         ]
-#endif
 
 module Site =
     open WebSharper.UI.Next.Server
@@ -66,14 +64,7 @@ module Site =
             Content.Page(
                 Title = "WebSharper.CytoscapeJS Tests",
                 Body = [
-#if ZAFIR
                     client <@ Client.RunTests() @>
-#else
-                    WebSharper.Testing.Runner.Run [
-                        System.Reflection.Assembly.GetExecutingAssembly()
-                    ]
-                    |> Doc.WebControl
-#endif
                 ]
             )
         )
