@@ -4,16 +4,16 @@ open WebSharper
 open WebSharper.Cytoscape
 open WebSharper.JavaScript
 open WebSharper.JQuery
-open WebSharper.UI.Next
-open WebSharper.UI.Next.Client
-open WebSharper.UI.Next.Html
+open WebSharper.UI
+open WebSharper.UI.Client
+open WebSharper.UI.Html
 
 [<JavaScript>]
 module Client =
 
     [<SPAEntryPoint>]
     let Main () =
-        let graph = divAttr [attr.style "height:100vh;"] []
+        let graph = div [attr.style "height:100vh;"] []
 
         graph
         |> Doc.RunById "main"
@@ -26,17 +26,17 @@ module Client =
                         [|
                             ElementObject(Data = ElementData(Id = "a"))
                             ElementObject(Data = ElementData(Id = "b"))
-                            //ElementObject(Data = ElementData(Id = "c"))
-                            //ElementObject(Data = ElementData(Id = "d"))
-                            //ElementObject(Data = ElementData(Id = "e"))
-                            //ElementObject(Data = ElementData(Id = "f"))
+                            ElementObject(Data = ElementData(Id = "c"))
+                            ElementObject(Data = ElementData(Id = "d"))
+                            ElementObject(Data = ElementData(Id = "e"))
+                            ElementObject(Data = ElementData(Id = "f"))
                             ElementObject(Data = ElementData(Id = "ab", Source = "a", Target = "b"))
-                            //ElementObject(Data = ElementData(Id = "ba", Source = "b", Target = "a"))
-                            //ElementObject(Data = ElementData(Id = "bc", Source = "b", Target = "c"))
-                            //ElementObject(Data = ElementData(Id = "ad", Source = "a", Target = "d"))
-                            //ElementObject(Data = ElementData(Id = "cf", Source = "c", Target = "f"))
-                            //ElementObject(Data = ElementData(Id = "de", Source = "d", Target = "e"))
-                            //ElementObject(Data = ElementData(Id = "bf", Source = "b", Target = "f"))
+                            ElementObject(Data = ElementData(Id = "ba", Source = "b", Target = "a"))
+                            ElementObject(Data = ElementData(Id = "bc", Source = "b", Target = "c"))
+                            ElementObject(Data = ElementData(Id = "ad", Source = "a", Target = "d"))
+                            ElementObject(Data = ElementData(Id = "cf", Source = "c", Target = "f"))
+                            ElementObject(Data = ElementData(Id = "de", Source = "d", Target = "e"))
+                            ElementObject(Data = ElementData(Id = "bf", Source = "b", Target = "f"))
                         |],
                     Style = 
                         [|
