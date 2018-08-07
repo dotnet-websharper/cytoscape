@@ -13,7 +13,7 @@ module Client =
 
     [<SPAEntryPoint>]
     let Main () =
-        let graph = div [attr.style "height:100vh;"] []
+        let graph = Elt.div [attr.style "height:100vh;"] []
 
         graph
         |> Doc.RunById "main"
