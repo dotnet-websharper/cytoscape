@@ -2,13 +2,6 @@
   "version": 1,
   "isRoot": true,
   "tools": {
-    "fake-cli": {
-      "version": "5.20.4",
-      "commands": [
-        "fake"
-      ],
-      "rollForward": false
-    },
     "paket": {
       "version": "9.0.2",
       "commands": [
