@@ -1,5 +1,5 @@
 # WebSharper.CytoscapeJS
 
-WebSharper Extension for CytoscapeJS 3.1.3
+WebSharper Extension for CytoscapeJS 3.32.0
 
 * [Source Repository](https://github.com/intellifactory/websharper.cytoscapejs)
