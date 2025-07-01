@@ -22,7 +22,6 @@ namespace WebSharper.Cytoscape.Sample
 open WebSharper
 open WebSharper.Cytoscape
 open WebSharper.JavaScript
-open WebSharper.JQuery
 open WebSharper.UI
 open WebSharper.UI.Client
 open WebSharper.UI.Html

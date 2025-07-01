@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "WebSharper.Cytoscape.Sample": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:52320;http://localhost:52321"
+    }
+  }
+}

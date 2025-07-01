@@ -4,6 +4,9 @@
 /build/
 /*/bin/
 /*/obj/
+/*/node_modules/
+/*/websharper.log
+/*/wwwroot/Scripts
 /packages/
 /tools/packages/
 
