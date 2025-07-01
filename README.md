@@ -2,4 +2,4 @@
 
 WebSharper Extension for CytoscapeJS 3.32.0
 
-* [Source Repository](https://github.com/intellifactory/websharper.cytoscapejs)
+* [Library Repository](https://github.com/cytoscape/cytoscape.js/)
