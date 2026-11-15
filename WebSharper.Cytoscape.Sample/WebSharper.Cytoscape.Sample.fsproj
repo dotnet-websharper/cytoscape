@@ -1,22 +1,30 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
-    <WebSharperProject>Bundle</WebSharperProject>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <OutputType>Library</OutputType>
     <WebSharperSourceMap>false</WebSharperSourceMap>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="AssemblyInfo.fs" />
     <Compile Include="Client.fs" />
+    <None Include="package.json" />
+    <None Include="esbuild.config.mjs" />
+    <None Include="wsconfig.json" />
+    <Content Include="index.html" />
+    <Content Include="site.css" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="../WebSharper.Cytoscape\WebSharper.Cytoscape.fsproj" />
+    <ProjectReference Include="..\WebSharper.Cytoscape\WebSharper.Cytoscape.fsproj" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
-    <Reference Include="System.Web" />
-  </ItemGroup>
+
+  <Target Name="ESBuildBundle" AfterTargets="WebSharperCompile">
+    <Exec Command="npm install" />
+    <Exec Command="node ./esbuild.config.mjs" />
+  </Target>
+
   <Import Project="..\paket-files\wsbuild\github.com\dotnet-websharper\build-script\WebSharper.Fake.targets" Condition="Exists('..\paket-files\wsbuild\github.com\dotnet-websharper\build-script\WebSharper.Fake.targets')" />
   <Import Project="..\.paket\Paket.Restore.targets" />
+
 </Project>

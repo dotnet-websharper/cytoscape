@@ -1,0 +1,11 @@
+{
+  "name": "websharper.cytoscape.sample",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "esbuild": "^0.19.9"
+  },
+  "dependencies": {
+    "cytoscape": "^3.35.0"
+  }
+}
