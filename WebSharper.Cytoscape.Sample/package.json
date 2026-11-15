@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
-    "esbuild": "^0.19.9"
+    "esbuild": "^0.28.1"
   },
   "dependencies": {
     "cytoscape": "^3.35.0"
