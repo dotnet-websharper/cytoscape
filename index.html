@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSharper.Cytoscape — sample</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%234f46e5'/%3E%3Ccircle cx='8' cy='8' r='3' fill='white'/%3E%3C/svg%3E" />
+    <script>
+        // Apply a previously chosen theme before first paint. Light is the
+        // default; the key is shared with Client.fs (themeStorageKey).
+        try {
+            var t = localStorage.getItem('websharper-cytoscape-theme');
+            if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) { }
+    </script>
+    <link rel="stylesheet" href="site.css" />
+    <!-- cytoscape.js is bundled from the npm package; the WebSharper head is folded in here. -->
+    
+</head>
+<body>
+    <header class="app-header">
+        <div class="app-titles">
+            <h1>WebSharper.Cytoscape</h1>
+            <p>Cytoscape.js 3.x bindings for F# — with <a href="https://websharper.com">WebSharper</a></p>
+        </div>
+        <div class="app-actions">
+            <button class="btn theme-toggle" ws-onclick="ToggleTheme" title="Switch between the light and dark theme">
+                <span>${themeLabel}</span>
+            </button>
+            <a class="app-source" href="https://github.com/dotnet-websharper/cytoscape">Source</a>
+        </div>
+    </header>
+
+    <main class="page">
+        <p class="notice">${notice}</p>
+
+        <section class="workspace">
+            <div class="card graph-card">
+                <header class="card-header">
+                    <h2>Graph</h2>
+                    <p>
+                        Tap a node or edge, drag nodes around, zoom with the wheel and
+                        pan the background. The buttons below drive the core, collection
+                        and element APIs.
+                    </p>
+                </header>
+                <div class="toolbar">
+                    <button class="btn btn-primary" ws-onclick="Fit">Fit</button>
+                    <button class="btn" ws-onclick="Center">Center</button>
+                    <button class="btn" ws-onclick="Reset">Reset</button>
+                    <button class="btn" ws-onclick="ZoomIn">Zoom in</button>
+                    <button class="btn" ws-onclick="ZoomOut">Zoom out</button>
+                    <button class="btn" ws-onclick="PanRight">Pan right</button>
+                    <span class="spacer"></span>
+                    <button class="btn" ws-onclick="SelectAll">Select all</button>
+                    <button class="btn" ws-onclick="ClearSelection">Clear selection</button>
+                </div>
+                <div class="toolbar">
+                    <button class="btn" ws-onclick="AddNode">Add node</button>
+                    <button class="btn" ws-onclick="RemoveSelected">Remove selected</button>
+                    <button class="btn" ws-onclick="Highlight">Highlight classes</button>
+                    <button class="btn" ws-onclick="FlashEdges">Flash edges</button>
+                    <button class="btn" ws-onclick="AnimateElements">Animate elements</button>
+                    <button class="btn" ws-onclick="Restyle">Restyle via Style</button>
+                    <button class="btn" ws-onclick="AnimateViewport">Animate viewport</button>
+                    <span class="spacer"></span>
+                    <button class="btn btn-primary" ws-onclick="ExportPng">Export PNG</button>
+                </div>
+                <div ws-replace="graphContainer"></div>
+            </div>
+
+            <aside class="side">
+                <section class="card">
+                    <header class="card-header">
+                        <h2>Readout</h2>
+                    </header>
+                    <dl class="readout">
+                        <div><dt>Graph</dt><dd>${stats}</dd></div>
+                        <div><dt>Viewport</dt><dd>${viewport}</dd></div>
+                        <div><dt>Selection</dt><dd>${selection}</dd></div>
+                        <div><dt>Bounds</dt><dd>${bounds}</dd></div>
+                    </dl>
+                </section>
+
+                <section class="card">
+                    <header class="card-header">
+                        <h2>Layouts</h2>
+                        <p>Runs a built-in layout through <code>LayoutOptions</code>.</p>
+                    </header>
+                    <div class="toolbar">
+                        <button class="btn" ws-onclick="LayoutGrid">Grid</button>
+                        <button class="btn" ws-onclick="LayoutCircle">Circle</button>
+                        <button class="btn" ws-onclick="LayoutConcentric">Concentric</button>
+                        <button class="btn" ws-onclick="LayoutBreadthFirst">Breadth-first</button>
+                        <button class="btn" ws-onclick="LayoutCose">Cose</button>
+                        <button class="btn" ws-onclick="LayoutRandom">Random</button>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <header class="card-header">
+                        <h2>Algorithms</h2>
+                        <p>Search, centrality, spanning/cut and clustering algorithms.</p>
+                    </header>
+                    <div class="toolbar">
+                        <button class="btn" ws-onclick="RunBfs">BFS</button>
+                        <button class="btn" ws-onclick="RunDijkstra">Dijkstra</button>
+                        <button class="btn" ws-onclick="RunPageRank">PageRank</button>
+                        <button class="btn" ws-onclick="RunDegree">Degree</button>
+                        <button class="btn" ws-onclick="RunCloseness">Closeness</button>
+                        <button class="btn" ws-onclick="RunBetweenness">Betweenness</button>
+                        <button class="btn" ws-onclick="RunComponents">Components</button>
+                        <button class="btn" ws-onclick="RunKruskal">Kruskal</button>
+                        <button class="btn" ws-onclick="RunKargerStein">Karger-Stein</button>
+                        <button class="btn" ws-onclick="RunKMeans">k-means</button>
+                        <button class="btn" ws-onclick="RunHierarchical">Hierarchical</button>
+                    </div>
+                    <p class="status">${algorithm}</p>
+                </section>
+
+                <section class="card">
+                    <header class="card-header">
+                        <h2>Events</h2>
+                        <p>Handlers receive a typed <code>EventObject</code>.</p>
+                    </header>
+                    <p class="status">${events}</p>
+                </section>
+            </aside>
+        </section>
+
+        <p class="status footer-status">${status}</p>
+    </main>
+
+    <script type="text/javascript" src="Scripts/WebSharper.Cytoscape.Sample.min.js"></script>
+</body>
+</html>
